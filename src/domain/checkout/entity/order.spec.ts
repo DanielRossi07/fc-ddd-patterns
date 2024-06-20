@@ -34,6 +34,19 @@ describe("Order unit tests", () => {
     expect(total).toBe(600);
   });
 
+  it("should change order items", () => {
+    const item = new OrderItem("i1", "Item 1", 100, "p1", 2);
+    const item2 = new OrderItem("i2", "Item 2", 200, "p2", 2);
+    const order = new Order("order1", "customer1", [item]);
+
+    expect(order.items).toEqual([item]);
+
+    order.changeItems([item, item2]);
+
+    expect(order.items).toEqual([item, item2]);
+
+  });
+
   it("should throw error if the item qte is less or equal zero 0", () => {
     expect(() => {
       const item = new OrderItem("i1", "Item 1", 100, "p1", 0);
