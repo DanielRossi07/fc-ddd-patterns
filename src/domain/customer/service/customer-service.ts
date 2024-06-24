@@ -1,7 +1,6 @@
 import CustomerRepository from "../../../infrastructure/customer/repository/sequelize/customer.repository";
 import EventDispatcher from "../../@shared/event/event-dispatcher";
-import CustomerDTO from "../dto/customer-dto";
-import Customer from "../entity/customer";
+import { InputCreateCustomerDTO, OutputCreateCustomerDTO } from "../dto/customer-dto";
 import CustomerCreatedEvent from "../event/customer-created.event";
 import ConsoleLogWhenCustomerIsCreatedHandler from "../event/handler/console-log-when-customer-is-created.handler";
 import CustomerFactory from "../factory/customer.factory";
@@ -13,7 +12,7 @@ export default class CustomerService {
         this.eventDispatcher = eventDispatcher;
     }
 
-    createCustomer(customerDTO: CustomerDTO) {
+    createCustomer(customerDTO: InputCreateCustomerDTO) : OutputCreateCustomerDTO {
         const customer = CustomerFactory.createWithAddressFromDTO(customerDTO);
 
         const customerRepository = new CustomerRepository();
@@ -25,9 +24,11 @@ export default class CustomerService {
             id: customer.id
         });
         this.eventDispatcher.notify(customerCreatedEvent);
+
+        return customer;
     }
 
-    changeCustomerAddress(customerDTO: CustomerDTO) {
+    changeCustomerAddress(customerDTO: InputCreateCustomerDTO) : OutputCreateCustomerDTO {
         const customer = CustomerFactory.createWithAddressFromDTO(customerDTO);
         const eventHandler = new ConsoleLogWhenCustomerIsCreatedHandler();
         this.eventDispatcher.register("CustomerCreatedEvent", eventHandler);
@@ -39,5 +40,7 @@ export default class CustomerService {
             addressCity: customer.address._city
         });
         this.eventDispatcher.notify(customerCreatedEvent);
+
+        return customer;
     }
 }
