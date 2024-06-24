@@ -27,7 +27,8 @@ export default class CustomerService {
         this.eventDispatcher.notify(customerCreatedEvent);
     }
 
-    changeCustomerAddress(customer: Customer) {
+    changeCustomerAddress(customerDTO: CustomerDTO) {
+        const customer = CustomerFactory.createWithAddressFromDTO(customerDTO);
         const eventHandler = new ConsoleLogWhenCustomerIsCreatedHandler();
         this.eventDispatcher.register("CustomerCreatedEvent", eventHandler);
         const customerCreatedEvent = new CustomerCreatedEvent({
