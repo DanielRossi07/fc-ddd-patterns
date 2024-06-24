@@ -25,6 +25,18 @@ export default class Customer {
     return this._rewardPoints;
   }
 
+  get address(): Address {
+    return this._address;
+  }
+
+  get active(): boolean {
+    return this._active;
+  } 
+  
+  set address(address: Address) {
+    this._address = address;
+  }
+
   validate() {
     if (this._id.length === 0) {
       throw new Error("Id is required");
@@ -39,10 +51,6 @@ export default class Customer {
     this.validate();
   }
 
-  get Address(): Address {
-    return this._address;
-  }
-  
   changeAddress(address: Address) {
     this._address = address;
   }
@@ -64,9 +72,5 @@ export default class Customer {
 
   addRewardPoints(points: number) {
     this._rewardPoints += points;
-  }
-
-  set Address(address: Address) {
-    this._address = address;
-  }
+  } 
 }
